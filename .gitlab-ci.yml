@@ -1,0 +1,19 @@
+image: docker:20.10.11-alpine3.14
+
+variables:
+  APP_VERSION: 1.0.0
+
+build:
+  stage: build
+  only:
+    - master
+    - /^v[0-9\.]$/
+    - dev
+    - /^dev_[0-9\.]$/
+  before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+  script:
+    - docker build . -t $CI_REGISTRY_IMAGE:$APP_VERSION
+  after_script:
+    - docker tag $IMAGE_NAME $CI_REGISTRY_IMAGE:latest
+    - docker push --all-tags $CI_REGISTRY_IMAGE
