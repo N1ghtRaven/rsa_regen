@@ -3,6 +3,10 @@ image: docker:20.10.11-alpine3.14
 variables:
   APP_VERSION: 1.0.0
 
+stages:
+  - build
+  - test
+
 build:
   stage: build
   only:
@@ -17,3 +21,8 @@ build:
   after_script:
     - docker tag $IMAGE_NAME $CI_REGISTRY_IMAGE:latest
     - docker push --all-tags $CI_REGISTRY_IMAGE
+
+sast:
+  stage: test
+include:
+  - template: Security/SAST.gitlab-ci.yml
