@@ -19,7 +19,7 @@ build:
   script:
     - docker build . -t $CI_REGISTRY_IMAGE:$APP_VERSION
   after_script:
-    - docker tag $IMAGE_NAME $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:$APP_VERSION $CI_REGISTRY_IMAGE:latest
     - docker push --all-tags $CI_REGISTRY_IMAGE
 
 sast:
